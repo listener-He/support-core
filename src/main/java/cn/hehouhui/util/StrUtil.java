@@ -1,8 +1,9 @@
 package cn.hehouhui.util;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.util.*;
 
 /**
  * 字符串工具
@@ -41,10 +42,9 @@ public class StrUtil {
     /**
      * 判断一个字符是否是数字
      *
-     * @param c
-     *      待判断的是字符
-     * @return
-     *      是否是数字字符
+     * @param c 待判断的是字符
+     *
+     * @return 是否是数字字符
      */
     public static boolean isNumberChar(char c) {
         return ('0' <= c && c <= '9');
@@ -53,10 +53,9 @@ public class StrUtil {
     /**
      * 判断一个字符是否是大写字母
      *
-     * @param c
-     *      待判断的是字符
-     * @return
-     *      是否是大写字母字符
+     * @param c 待判断的是字符
+     *
+     * @return 是否是大写字母字符
      */
     public static boolean isCapital(char c) {
         return ('A' <= c && c <= 'Z');
@@ -65,10 +64,9 @@ public class StrUtil {
     /**
      * 判断一个字符是否是小写字母
      *
-     * @param c
-     *      待判断的是字符
-     * @return
-     *      是否是小写字母字符
+     * @param c 待判断的是字符
+     *
+     * @return 是否是小写字母字符
      */
     public static boolean isLowercase(char c) {
         return ('a' <= c && c <= 'z');
@@ -77,10 +75,9 @@ public class StrUtil {
     /**
      * 判断一个字符是否是字母
      *
-     * @param c
-     *      待判断的是字符
-     * @return
-     *      是否是字母字符
+     * @param c 待判断的是字符
+     *
+     * @return 是否是字母字符
      */
     public static boolean isLetter(char c) {
         return (isLowercase(c) || isCapital(c));
@@ -90,10 +87,9 @@ public class StrUtil {
     /**
      * 把byte类型的数据转换成十六进制ASCII字符表示
      *
-     * @param   in
-     *          待转化字节
+     * @param in 待转化字节
      *
-     * @return  十六进制ASCII字符表示
+     * @return 十六进制ASCII字符表示
      */
     public static String hexStr(byte in) {
         char[] DigitStr = {
@@ -153,7 +149,17 @@ public class StrUtil {
         if (EmptyUtil.isEmpty(label) || EmptyUtil.isEmpty(pattern)) {
             return false;
         }
-        return label.replaceAll(pattern, "").isEmpty();
+        int patternLength = pattern.length();
+        int labelLength = label.length();
+        if (labelLength % patternLength != 0) {
+            return false;
+        }
+        for (int i = 0; i < labelLength; i += patternLength) {
+            if (!label.substring(i, i + patternLength).equals(pattern)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -165,19 +171,19 @@ public class StrUtil {
      * @return 最小正周期
      */
     public static int minCycle(String label) {
-        if (label == null || label.isEmpty()) {
+        Objects.requireNonNull(label, "label cannot be null");
+        if (label.isEmpty()) {
             return 1;
         }
-
         int length = label.length();
         if (length == 1) {
             return 1;
         }
 
-        ArrayList<Integer> factors = getFactors(length);
-
+        List<Integer> factors = getFactors(length);
         return findMinCycle(label, factors);
     }
+
 
     /**
      * 获取字符串长度的所有因子
@@ -186,8 +192,12 @@ public class StrUtil {
      *
      * @return 因子列表
      */
-    public static ArrayList<Integer> getFactors(int length) {
-        ArrayList<Integer> result = new ArrayList<>();
+    public static List<Integer> getFactors(int length) {
+        Set<Integer> result = new TreeSet<>();
+        if (length == 1) {
+            result.add(1);
+            return new ArrayList<>(result);
+        }
         for (int i = 1; i <= Math.sqrt(length); i++) {
             if (length % i == 0) {
                 result.add(i);
@@ -196,9 +206,9 @@ public class StrUtil {
                 }
             }
         }
-        Collections.sort(result);
-        return result;
+        return new ArrayList<>(result);
     }
+
 
     /**
      * 根据因子列表找到最小正周期
@@ -208,9 +218,9 @@ public class StrUtil {
      *
      * @return 最小正周期
      */
-    public static int findMinCycle(String label, ArrayList<Integer> factors) {
+    public static int findMinCycle(String label, List<Integer> factors) {
         int length = label.length();
-        for (Integer factor : factors) {
+        for (int factor : factors) {
             String pattern = label.substring(0, factor);
             if (splicing(label, pattern)) {
                 return length / factor;
@@ -229,16 +239,23 @@ public class StrUtil {
      * @return {@link String }
      */
     public static String leftShift(String label, int n) {
+        // 检查输入字符串是否为空
         if (label == null) {
             throw new IllegalArgumentException("Input string cannot be null");
         }
+        // 处理空字符串或单字符字符串的情况
         if (label.isEmpty() || label.length() == 1) {
             return label;
         }
         int length = label.length();
-        int seek = n % length;
-        return label.substring(seek, length) +
-            label.substring(0, seek);
+        // 处理负数情况，并确保 n 在 [0, length) 范围内
+        n = (n % length + length) % length;
+        // 当 n 为 0 或者 n 是字符串长度的倍数时，直接返回原字符串
+        if (n == 0) {
+            return label;
+        }
+        // 执行字符串循环左移
+        return label.substring(n, length) + label.substring(0, n);
     }
 
 
@@ -270,12 +287,191 @@ public class StrUtil {
         return stringMatch.indexOfMatch(match, pattern).size();
     }
 
-    public static String format(final String format, Object... args) {
-        if (EmptyUtil.isEmpty(format)) {
-            return "";
+    /**
+     * 将指定字符集的数据转换为另外一个字符集
+     *
+     * @param data          数据
+     * @param charset       当前数据字符集
+     * @param resultCharset 结果数据集
+     *
+     * @return utf8字符集的数据
+     */
+    public static byte[] convert(byte[] data, Charset charset, Charset resultCharset) {
+        if (data == null) {
+            throw new IllegalArgumentException("Data cannot be null");
+        }
+        if (charset == null || resultCharset == null) {
+            throw new IllegalArgumentException("Charsets cannot be null");
+        }
+        if (resultCharset.equals(charset)) {
+            return data;
+        }
+        return convertCharset(data, charset, resultCharset);
+    }
+
+    private static byte[] convertCharset(byte[] data, Charset charset, Charset resultCharset) {
+        CharBuffer decode = charset.decode(ByteBuffer.wrap(data));
+        ByteBuffer encodeBuffer = resultCharset.encode(decode);
+        return Arrays.copyOf(encodeBuffer.array(), encodeBuffer.limit());
+    }
+
+
+    /**
+     * 查找第count个指定code在str中的位置
+     * <p>
+     * 例如str是123132412，code是3，count是2，那么返回的index是4；
+     *
+     * @param str   字符串
+     * @param code  要搜寻的代码
+     * @param count 需要搜寻第几个
+     *
+     * @return int 索引
+     */
+    public static int indexOf(String str, String code, int count) {
+        if (str == null || code == null) {
+            throw new IllegalArgumentException("str and code cannot be null");
+        }
+        if (count <= 0) {
+            throw new IllegalArgumentException("count must be greater than 0");
+        }
+        int foundCount = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.substring(i, i + 1).equals(code)) {
+                foundCount++;
+                if (foundCount == count) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+
+    /**
+     * 将目标字符串重复count次返回
+     *
+     * @param str   目标字符串
+     * @param count 次数
+     *
+     * @return 目标字符串重复count次结果，例如目标字符串是test，count是2，则返回testtest，如果count是3则返回testtesttest
+     */
+    public static String copy(String str, int count) {
+        if (str == null) {
+            throw new NullPointerException("原始字符串不能为null");
         }
 
-        return String.format(format,args);
+        if (count <= 0) {
+            throw new IllegalArgumentException("次数必须大于0");
+        }
+        if (count == 1) {
+            return str;
+        }
+        if (count == 2) {
+            return str + str;
+        }
+
+        return str.repeat(count);
+    }
+
+    /**
+     * 如果源数据为空，则返回默认数据
+     *
+     * @param src        源数据
+     * @param defaultStr 默认字符串
+     *
+     * @return 如果源数据为空，则返回默认数据
+     */
+    public static String getOrDefault(String src, String defaultStr) {
+        return EmptyUtil.isEmpty(src) ? defaultStr : src;
+    }
+
+    /**
+     * 格式化字符串，使用{}作为占位符
+     *
+     * @param msg  字符串模板
+     * @param args 模板参数
+     *
+     * @return 格式化后的字符串
+     */
+    public static String format(String msg, Object... args) {
+        if (EmptyUtil.isEmpty(msg)) {
+            return "";
+        }
+        return String.format(msg, args);
+    }
+
+    /**
+     * 将字符串前后的指定数据去除
+     *
+     * @param data 字符串
+     * @param trim 要去除的数据
+     *
+     * @return 处理后的数据，例如数据是123abc123，trim是123，那么处理完毕后返回abc
+     */
+    public static String trim(String data, String trim) {
+        Assert.argNotBlank(data, "data");
+        Assert.argNotBlank(trim, "trim");
+
+        String result = data;
+        while (result.startsWith(trim)) {
+            result = result.substring(trim.length());
+        }
+
+        while (result.endsWith(trim)) {
+            result = result.substring(0, result.length() - trim.length());
+        }
+
+        return result;
+    }
+
+    /**
+     * 将字符串前后的指定数据去除
+     *
+     * @param data 字符串
+     * @param trim 要去除的数据
+     *
+     * @return 处理后的数据，例如数据是123abc123，trim是123，那么处理完毕后返回abc
+     */
+    public static String trim(String data, char trim) {
+        return trim(data, Character.toString(trim));
+    }
+
+    /**
+     * 如果字符串长度小于指定长度，则在左边补上指定字符
+     *
+     * @param str 字符串
+     * @param len 目标长度
+     * @param pad 补上的字符
+     *
+     * @return 补齐后的字符串
+     */
+    public static String leftPadding(String str, int len, char pad) {
+        int strLen = str.length();
+        if (strLen >= len) {
+            return str;
+        }
+        char[] chars = new char[len - strLen];
+        Arrays.fill(chars, pad);
+        return new String(chars) + str;
+    }
+
+    /**
+     * 如果字符串长度小于指定长度，则在右边补上指定字符
+     *
+     * @param str 字符串
+     * @param len 目标长度
+     * @param pad 补上的字符
+     *
+     * @return 补齐后的字符串
+     */
+    public static String rightPadding(String str, int len, char pad) {
+        int strLen = str.length();
+        if (strLen >= len) {
+            return str;
+        }
+        char[] chars = new char[len - strLen];
+        Arrays.fill(chars, pad);
+        return str + new String(chars);
     }
 
 
