@@ -1,6 +1,7 @@
 package cn.hehouhui.util;
 
 import cn.hehouhui.constant.BasicConstant;
+import cn.hehouhui.constant.ExceptionProviderConst;
 import cn.hehouhui.shandard.TreeNode;
 
 import java.lang.reflect.Array;
@@ -21,6 +22,84 @@ public class CollUtil {
 
     private CollUtil() {
         throw new AssertionError();
+    }
+
+
+    /**
+     * 根据指定的开始值、结束值、下一个值的生成函数、映射函数和已存在的值集合，填充一个集合
+     *
+     * @param start         范围的开始值，不能为空
+     * @param end           范围的结束值，不能为空
+     * @param next          用于生成下一个值的函数，不能为空
+     * @param mapper        用于将集合中的元素映射到可比较类型的函数
+     * @param existingValue 已存在的值集合
+     * @param value         要填充的值
+     *
+     * @return {@link List }<{@link T }> 填充后的集合
+     */
+    public static <T, E extends Comparable<E>> List<T> fill(E start, E end, Function<E, E> next, Function<T, E> mapper, Collection<T> existingValue, T value) {
+        // 确保开始值、结束值和下一个值的生成函数不为空
+        Assert.notNull(start, "开始值不能为空");
+        Assert.notNull(end, "结束值不能为空");
+        Assert.notNull(next, "next不能为空");
+
+        // 初始化范围列表，用于存储从开始值到结束值的所有值
+        List<E> range = new ArrayList<>();
+        range.add(start);
+
+        // 使用原子引用来存储当前值，以便在多线程环境下安全地更新当前值
+        AtomicReference<E> startRef = new AtomicReference<>(start);
+
+        // 生成范围列表，直到达到或超过结束值
+        while (true) {
+            E nextValue = next.apply(startRef.get());
+            if (nextValue.compareTo(end) >= 0) {
+                range.add(end);
+                break;
+            }
+            if (nextValue.compareTo(startRef.get()) <= 0) {
+                throw ExceptionProviderConst.RuntimeExceptionProvider.newRuntimeException("Next " + nextValue + " ge Pre " + startRef.get());
+            }
+            range.add(start);
+            startRef.set(nextValue);
+        }
+
+        // 调用fill方法，根据生成的范围列表填充集合
+        return fill(range, mapper, existingValue, value);
+    }
+
+
+    /**
+     * 根据给定的范围和映射函数，用指定的值填充一个集合
+     * <p>
+     * 如果范围为空，则返回一个空列表
+     * 否则，将现有值转换为Map，以便快速查找
+     * <p>
+     * 对于范围中的每个元素，使用映射函数在现有值中查找对应的值，如果找不到，则使用指定的值
+     *
+     * @param range         范围集合，用于确定填充的大小和顺序
+     * @param mapper        映射函数，用于将T类型转换为E类型
+     * @param existingValue 现有值集合，用于查找已存在的值
+     * @param value         默认值，当范围中的元素在现有值中找不到时使用
+     *
+     * @return {@link List }<{@link T }> 填充后的集合
+     */
+    public static <T, E> List<T> fill(Collection<E> range, Function<T, E> mapper, Collection<T> existingValue, T value) {
+        // 检查范围是否为空，如果为空，则直接返回一个空列表
+        if (EmptyUtil.isEmpty(range)) {
+            return EmptyUtil.emptyList();
+        }
+        // 将现有值转换为Map，键为通过映射函数转换后的值，值为原始值
+        // 这样做是为了在填充时能够快速查找现有值中是否存在对应的值
+        Map<E, T> map = toMap(existingValue, mapper, Function.identity());
+
+        // 对范围中的每个元素，使用映射函数在现有值中查找对应的值
+        // 如果找不到，则使用指定的值
+        // 最后将结果收集到一个新的列表中并返回
+        return range.stream().map(e -> {
+            T t = map.get(e);
+            return t == null ? value : t;
+        }).collect(Collectors.toList());
     }
 
 
@@ -260,7 +339,7 @@ public class CollUtil {
     public static <T, K, V> Map<K, V> toMap(Collection<T> items, Function<? super T, ? extends K> keyMapper, Function<? super T, ? extends V> valueMapper, BinaryOperator<V> mergeFunction, Supplier<? extends Map<K, V>> supplier) {
         // 如果输入项为null或空集合，直接返回一个空的Map。
         if (items == null || items.isEmpty()) {
-            return supplier.get();
+            return EmptyUtil.emptyMap();
         }
         // 使用提供的函数和策略将集合流转换为Map。
         return items.stream().filter(item -> item != null && keyMapper.apply(item) != null && valueMapper.apply(item) != null)
@@ -358,10 +437,9 @@ public class CollUtil {
     /**
      * 生成指定类型指定长度的一维数组
      *
-     * @param arrayType
-     *            数组类型
-     * @param len
-     *            长度
+     * @param arrayType 数组类型
+     * @param len       长度
+     *
      * @return 指定类型指定长度的一维数组
      */
     @SuppressWarnings("unchecked")
@@ -372,14 +450,11 @@ public class CollUtil {
     /**
      * 判断数组长度是否相同
      *
-     * @param arr0
-     *            数组1
-     * @param arr1
-     *            数组2
-     * @param <T>
-     *            数组实际类型
-     * @param <F>
-     *            数组实际类型
+     * @param arr0 数组1
+     * @param arr1 数组2
+     * @param <T>  数组实际类型
+     * @param <F>  数组实际类型
+     *
      * @return 返回true表示数组长度一致
      */
     public static <T, F> boolean sizeEquals(T[] arr0, F[] arr1) {

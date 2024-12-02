@@ -1,8 +1,6 @@
 package cn.hehouhui.util;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 判断空工具
@@ -126,4 +124,32 @@ public class EmptyUtil {
     public static boolean isNotEmpty(Object bean) {
         return !isEmpty(bean);
     }
+
+
+    /**
+     * 空集合
+     *
+     * @return {@link List }<{@link T }>
+     */
+    public static <T> List<T> emptyList() {
+        return Collections.emptyList();
+    }
+
+    /**
+     * 空集合
+     *
+     * @return {@link Set }<{@link T }>
+     */
+    public static <T> Set<T> emptySet() {
+        return Collections.emptySet();
+    }
+
+    /**
+     * 空map
+     *
+     * @return {@link Map }<{@link K },{@link V }>
+     */
+    public static <K,V> Map<K,V> emptyMap() {
+      return Collections.emptyMap();
+    };
 }
