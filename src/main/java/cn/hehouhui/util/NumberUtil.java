@@ -12,10 +12,12 @@
  */
 package cn.hehouhui.util;
 
+
 /**
- * @since 1.0.0
- * @author JoeKerouac
- * @date 2022-10-14 14:37:00
+ * 数字工具
+ *
+ * @author HEHH
+ * @date 2024/12/02
  */
 public class NumberUtil {
 
