@@ -12,7 +12,6 @@
  */
 package cn.hehouhui.util;
 
-
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -47,11 +46,11 @@ public class IDCardUtil {
      */
     private static final Pattern ID_CARD_PATTERN = Pattern.compile("[0-9]{17}[0-9xX]");
 
-
     /**
      * 检查身份证号是否符合格式
      *
-     * @param idCard 身份证号
+     * @param idCard
+     *            身份证号
      *
      * @return 如果身份证号符合身份证格式则返回<code>true</code>
      */
@@ -79,11 +78,11 @@ public class IDCardUtil {
         return true;
     }
 
-
     /**
      * 获取用于生日
      *
-     * @param idCard 身份证号
+     * @param idCard
+     *            身份证号
      *
      * @return 生日，格式yyyyMMdd
      */
@@ -97,7 +96,8 @@ public class IDCardUtil {
     /**
      * 获取身份证的区域编码
      *
-     * @param idCard 身份证
+     * @param idCard
+     *            身份证
      *
      * @return 区域编码
      */
@@ -111,7 +111,8 @@ public class IDCardUtil {
     /**
      * 获取用户性别，0是女，1是男
      *
-     * @param idCard 用户身份证号
+     * @param idCard
+     *            用户身份证号
      *
      * @return 用户性别
      */
@@ -127,7 +128,8 @@ public class IDCardUtil {
     /**
      * 获取用户年龄，如果2020.01.01出生，那么到2021.01.01都返回1岁，到2021.01.02就返回2岁了
      *
-     * @param idCard 用户身份证号
+     * @param idCard
+     *            用户身份证号
      *
      * @return int 用户年龄
      */
@@ -156,11 +158,11 @@ public class IDCardUtil {
         }
     }
 
-
     /**
      * 计算校验和
      *
-     * @param card 身份证号，长度不得低于17位，使用前17位计算校验和
+     * @param card
+     *            身份证号，长度不得低于17位，使用前17位计算校验和
      *
      * @return 校验和
      */
@@ -169,10 +171,9 @@ public class IDCardUtil {
         byte[] idCardByte = card.getBytes(Charset.defaultCharset());
         int sum = 0;
         for (int j = 0; j < 17; j++) {
-            sum += (((int) idCardByte[j]) - 48) * POWER[j];
+            sum += (((int)idCardByte[j]) - 48) * POWER[j];
         }
         return sum % 11;
     }
-
 
 }

@@ -5,14 +5,14 @@ import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 /**
+ * 对象引用工具
+ *
  * @author HeHui
  * @date 2024-11-28 13:45
  */
 public class ReferenceUtil {
-
 
     /**
      * 销毁引用队列

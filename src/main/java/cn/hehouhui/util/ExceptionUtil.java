@@ -15,7 +15,8 @@ public class ExceptionUtil {
     /**
      * 打印异常的异常栈到字符串
      *
-     * @param throwable 异常
+     * @param throwable
+     *            异常
      *
      * @return 异常栈
      */
@@ -28,7 +29,8 @@ public class ExceptionUtil {
     /**
      * 通过递归调用getCause来获取最底层的异常
      *
-     * @param throwable 上层异常，不能为null
+     * @param throwable
+     *            上层异常，不能为null
      *
      * @return 最底层异常
      */

@@ -12,12 +12,13 @@ import java.util.function.Function;
  */
 public interface Sortable<T, E extends Comparable<E>> {
 
-
     /**
      * 对集合进行排序
      *
-     * @param collection 待排序集合
-     * @param sortField  排序字段
+     * @param collection
+     *            待排序集合
+     * @param sortField
+     *            排序字段
      *
      * @return {@link List }<{@link T }> 已排序集合
      */

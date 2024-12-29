@@ -34,7 +34,6 @@ public final class ExceptionProviderConst {
     public static final ExceptionProvider UnsupportedOperationExceptionProvider =
         ((cause, msg) -> new UnsupportedOperationException(msg, cause));
 
-
     /**
      * 编码异常
      */

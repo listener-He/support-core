@@ -16,12 +16,13 @@ import java.util.function.Function;
  */
 class HeapSort<T, E extends Comparable<E>> implements Sortable<T, E> {
 
-
     /**
      * 对集合进行排序
      *
-     * @param collection 待排序集合
-     * @param sortField  排序字段
+     * @param collection
+     *            待排序集合
+     * @param sortField
+     *            排序字段
      *
      * @return {@link List }<{@link T }> 已排序集合
      */
@@ -54,12 +55,12 @@ class HeapSort<T, E extends Comparable<E>> implements Sortable<T, E> {
         private final Function<T, E> sortField;
 
         public MaxHeap(Collection<T> data, Function<T, E> sortField) {
-            this((T[]) data.toArray(), sortField);
+            this((T[])data.toArray(), sortField);
         }
 
         public MaxHeap(T[] data, Function<T, E> sortField) {
             this.sortField = sortField;
-            this.queue = (T[]) Array.newInstance(data.getClass().getComponentType(), data.length + 1);
+            this.queue = (T[])Array.newInstance(data.getClass().getComponentType(), data.length + 1);
             for (int i = 0; i < data.length; i++) {
                 queue[++size] = data[i];
                 fixUp(size);
@@ -73,10 +74,10 @@ class HeapSort<T, E extends Comparable<E>> implements Sortable<T, E> {
         }
 
         /**
-         * 从给定的父节点开始，向下调整堆，以确保堆的性质被维护
-         * 主要用于删除堆顶元素或插入新元素后，重新调整堆结构
+         * 从给定的父节点开始，向下调整堆，以确保堆的性质被维护 主要用于删除堆顶元素或插入新元素后，重新调整堆结构
          *
-         * @param fatherIndex 调整开始的父节点索引
+         * @param fatherIndex
+         *            调整开始的父节点索引
          */
         private void fixDown(int fatherIndex) {
             int size = this.size; // 提前获取堆的大小，避免多次访问成员变量
@@ -86,12 +87,14 @@ class HeapSort<T, E extends Comparable<E>> implements Sortable<T, E> {
                 int largest = fatherIndex;
 
                 // 检查左子节点是否存在且大于父节点
-                if (leftChild <= size && sortField.apply(queue[leftChild]).compareTo(sortField.apply(queue[largest])) > 0) {
+                if (leftChild <= size
+                    && sortField.apply(queue[leftChild]).compareTo(sortField.apply(queue[largest])) > 0) {
                     largest = leftChild;
                 }
 
                 // 检查右子节点是否存在且大于当前最大节点
-                if (rightChild <= size && sortField.apply(queue[rightChild]).compareTo(sortField.apply(queue[largest])) > 0) {
+                if (rightChild <= size
+                    && sortField.apply(queue[rightChild]).compareTo(sortField.apply(queue[largest])) > 0) {
                     largest = rightChild;
                 }
 
@@ -106,12 +109,11 @@ class HeapSort<T, E extends Comparable<E>> implements Sortable<T, E> {
             }
         }
 
-
         /**
-         * 调整指定索引处的元素位置以维持堆属性。
-         * 用于处理指定索引处元素的堆属性违规情况。 在初始化阶段，需要构建所有元素满足大顶堆
+         * 调整指定索引处的元素位置以维持堆属性。 用于处理指定索引处元素的堆属性违规情况。 在初始化阶段，需要构建所有元素满足大顶堆
          *
-         * @param currentIndex 需要调整的元素的索引。
+         * @param currentIndex
+         *            需要调整的元素的索引。
          */
         private void fixUp(int currentIndex) {
             // 检查队列是否为空，如果为空则抛出异常。
@@ -139,15 +141,19 @@ class HeapSort<T, E extends Comparable<E>> implements Sortable<T, E> {
         }
 
         /**
-         * 交换数组中两个指定位置的元素
-         * 用于在数组中交换两个位置的元素，以实现元素的重新排列
+         * 交换数组中两个指定位置的元素 用于在数组中交换两个位置的元素，以实现元素的重新排列
          *
-         * @param array 要进行元素交换的数组，类型为泛型E，表示可以是任何类型的数组
-         * @param i     第一个要交换的元素的索引位置
-         * @param j     第二个要交换的元素的索引位置
+         * @param array
+         *            要进行元素交换的数组，类型为泛型E，表示可以是任何类型的数组
+         * @param i
+         *            第一个要交换的元素的索引位置
+         * @param j
+         *            第二个要交换的元素的索引位置
          *
-         * @throws IllegalArgumentException  如果传入的数组为null，则抛出此异常，表示不允许操作空数组
-         * @throws IndexOutOfBoundsException 如果传入的索引i或j不在数组的有效索引范围内，则抛出此异常，表示索引越界
+         * @throws IllegalArgumentException
+         *             如果传入的数组为null，则抛出此异常，表示不允许操作空数组
+         * @throws IndexOutOfBoundsException
+         *             如果传入的索引i或j不在数组的有效索引范围内，则抛出此异常，表示索引越界
          */
         private void swap(T[] array, int i, int j) {
             if (array == null) {
@@ -162,6 +168,5 @@ class HeapSort<T, E extends Comparable<E>> implements Sortable<T, E> {
         }
 
     }
-
 
 }

@@ -9,13 +9,18 @@ package cn.hehouhui.util;
 public class RmbUtil {
 
     static String[] HanDigiStr = {"零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"};
-    static String[] HanDiviStr = {"", "拾", "佰", "仟", "万", "拾", "佰", "仟", "亿", "拾", "佰", "仟", "万", "拾", "佰", "仟", "亿", "拾", "佰", "仟", "万", "拾", "佰", "仟"};
+    static String[] HanDiviStr = {"", "拾", "佰", "仟", "万", "拾", "佰", "仟", "亿", "拾", "佰", "仟", "万", "拾", "佰", "仟", "亿",
+        "拾", "佰", "仟", "万", "拾", "佰", "仟"};
 
-    private RmbUtil() {throw new AssertionError();}
+    private RmbUtil() {
+        throw new AssertionError();
+    }
+
     /**
-     *  数字转中文人民币字符
+     * 数字转中文人民币字符
      *
-     * @param val 数字
+     * @param val
+     *            数字
      *
      * @return {@link String }
      */
@@ -31,8 +36,8 @@ public class RmbUtil {
         long temp = Math.round(val * 100.0D);
         long integer = temp / 100L;
         long fraction = temp % 100L;
-        int jiao = (int) fraction / 10;
-        int fen = (int) fraction % 10;
+        int jiao = (int)fraction / 10;
+        int fen = (int)fraction % 10;
 
         String tailStr = "";
         if (jiao == 0 && fen == 0) {
@@ -53,11 +58,11 @@ public class RmbUtil {
         }
     }
 
-
     /**
      * 数字转字符串
      *
-     * @param digitStr 数字str
+     * @param digitStr
+     *            数字str
      *
      * @return {@link String }
      */
@@ -102,10 +107,14 @@ public class RmbUtil {
     /**
      * 追加数字
      *
-     * @param retDigit 字符缓存流
-     * @param part     零部位
-     * @param digit    数字
-     * @param weight   重量
+     * @param retDigit
+     *            字符缓存流
+     * @param part
+     *            零部位
+     * @param digit
+     *            数字
+     * @param weight
+     *            重量
      */
     private static void appendDigits(StringBuilder retDigit, String part, String[] digit, String[] weight) {
         int w;
@@ -133,11 +142,11 @@ public class RmbUtil {
         }
     }
 
-
     /**
      * 将正整数转换为汉字表示
      *
-     * @param numberStr 数字字符串
+     * @param numberStr
+     *            数字字符串
      *
      * @return 转换后的汉字字符串
      */

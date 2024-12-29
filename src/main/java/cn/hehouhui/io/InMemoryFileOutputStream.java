@@ -19,7 +19,7 @@ public class InMemoryFileOutputStream extends OutputStream {
 
     @Override
     public void write(int b) throws IOException {
-        file.write((byte) b);
+        file.write((byte)b);
     }
 
     @Override

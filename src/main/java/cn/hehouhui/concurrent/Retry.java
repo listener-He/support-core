@@ -30,9 +30,12 @@ public class Retry {
     /**
      * 执行指定函数，最多重试指定次数，发生异常时根据参数判断是抛出异常还是什么都不做
      *
-     * @param runnable     要执行的函数
-     * @param retry        最大重试次数
-     * @param throwIfError 发生异常时是否抛出，true 表示需要抛出
+     * @param runnable
+     *            要执行的函数
+     * @param retry
+     *            最大重试次数
+     * @param throwIfError
+     *            发生异常时是否抛出，true 表示需要抛出
      */
     public static void run(Runnable runnable, int retry, boolean throwIfError) {
         runWithRetry(() -> {
@@ -44,10 +47,14 @@ public class Retry {
     /**
      * 执行指定函数，最多重试指定次数，发生异常时返回默认结果
      *
-     * @param supplier      指定函数
-     * @param defaultResult 默认结果
-     * @param retry         最大重试次数
-     * @param <T>           结果类型
+     * @param supplier
+     *            指定函数
+     * @param defaultResult
+     *            默认结果
+     * @param retry
+     *            最大重试次数
+     * @param <T>
+     *            结果类型
      *
      * @return 结果
      */
@@ -58,9 +65,12 @@ public class Retry {
     /**
      * 执行指定函数，最多重试指定次数，如果仍然失败将会抛出异常
      *
-     * @param supplier 指定函数
-     * @param retry    最大重试次数
-     * @param <T>      结果类型
+     * @param supplier
+     *            指定函数
+     * @param retry
+     *            最大重试次数
+     * @param <T>
+     *            结果类型
      *
      * @return 结果
      */
@@ -71,15 +81,21 @@ public class Retry {
     /**
      * 执行指定函数，最多重试指定次数，发生异常时根据参数确认是返回默认结果还是抛出异常
      *
-     * @param supplier      指定函数
-     * @param defaultResult 默认结果
-     * @param isSuccess     判断结果是否成功
-     * @param retry         最大重试次数
-     * @param throwIfError  重试超限后异常是否抛出，true 表示需要抛出
+     * @param supplier
+     *            指定函数
+     * @param defaultResult
+     *            默认结果
+     * @param isSuccess
+     *            判断结果是否成功
+     * @param retry
+     *            最大重试次数
+     * @param throwIfError
+     *            重试超限后异常是否抛出，true 表示需要抛出
      *
      * @return {@link T } 结果
      */
-    public static <T> T runWithRetry(Supplier<T> supplier, Supplier<T> defaultResult, Predicate<T> isSuccess, int retry, boolean throwIfError) {
+    public static <T> T runWithRetry(Supplier<T> supplier, Supplier<T> defaultResult, Predicate<T> isSuccess, int retry,
+        boolean throwIfError) {
         // 确保 supplier 不为空
         Assert.argNotNull(supplier, "supplier");
         // 确保 retry 大于 0
@@ -108,7 +124,7 @@ public class Retry {
         if (throwIfError) {
             // 如果需要抛出异常，重新抛出捕获的异常
             if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
+                throw (RuntimeException)throwable;
             } else {
                 throw new RuntimeException(throwable);
             }
@@ -120,6 +136,5 @@ public class Retry {
             return defaultResult.get();
         }
     }
-
 
 }

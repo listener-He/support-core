@@ -12,15 +12,15 @@ import java.io.Serializable;
 public final class BasicConstant {
 
     // =============================================================
-    //  数组常量
+    // 数组常量
     // =============================================================
 
-    private BasicConstant(){throw new AssertionError();}
-
-
+    private BasicConstant() {
+        throw new AssertionError();
+    }
 
     // =============================================================
-    //  对象常量
+    // 对象常量
     // =============================================================
 
     // 0-valued primitive wrappers
@@ -37,7 +37,6 @@ public final class BasicConstant {
     private final static class NullPlaceholder implements Serializable {
         @Serial
         private static final long serialVersionUID = 7092611880189329093L;
-
 
         public String toString() {
             return "null";

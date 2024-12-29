@@ -63,6 +63,4 @@ public interface BaseEnum<T extends Serializable> {
         return Optional.empty();
     }
 
-
-
 }

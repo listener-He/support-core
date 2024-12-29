@@ -57,7 +57,8 @@ public class InMemoryFile implements Closeable {
     /**
      * 将数据包装为内存文件
      *
-     * @param data 数据
+     * @param data
+     *            数据
      *
      * @return 内存文件
      */
@@ -117,7 +118,8 @@ public class InMemoryFile implements Closeable {
     /**
      * 将数据刷出，如果当前文件已经映射到磁盘则将剩余未写出数据写出到磁盘
      *
-     * @throws IOException IO异常
+     * @throws IOException
+     *             IO异常
      */
     public void flush() throws IOException {
         check();
@@ -134,7 +136,8 @@ public class InMemoryFile implements Closeable {
     /**
      * 关闭输出，关闭输出后可以以输入流的形式获取数据
      *
-     * @throws IOException IO异常
+     * @throws IOException
+     *             IO异常
      */
     public void writeFinish() throws IOException {
         if (close) {
@@ -173,7 +176,8 @@ public class InMemoryFile implements Closeable {
      *
      * @return 数据输入流
      *
-     * @throws IOException IO异常
+     * @throws IOException
+     *             IO异常
      */
     public InputStream getDataAsInputStream() throws IOException {
         if (!close) {
@@ -224,7 +228,8 @@ public class InMemoryFile implements Closeable {
      *
      * @return 数据
      *
-     * @throws IOException IO异常
+     * @throws IOException
+     *             IO异常
      */
     public byte[] getData() throws IOException {
         if (file == null) {
@@ -240,7 +245,7 @@ public class InMemoryFile implements Closeable {
             Assert.assertTrue(file.length() <= Integer.MAX_VALUE, "文件过大，不支持读取",
                 ExceptionProviderConst.UnsupportedOperationExceptionProvider);
             InputStream inputStream = Files.newInputStream(file.toPath(), StandardOpenOption.READ);
-            return IOUtil.read(inputStream, (int) file.length(), true);
+            return IOUtil.read(inputStream, (int)file.length(), true);
         }
     }
 
@@ -264,9 +269,11 @@ public class InMemoryFile implements Closeable {
     /**
      * 写入数据
      *
-     * @param ref 要写入的数据
+     * @param ref
+     *            要写入的数据
      *
-     * @throws IOException IO异常
+     * @throws IOException
+     *             IO异常
      */
     private void write0(ByteBufferRef ref) throws IOException {
         check();

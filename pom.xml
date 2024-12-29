@@ -11,9 +11,27 @@
     <properties>
         <java.version>17</java.version>
         <skipTests>true</skipTests>
+        <!-- 格式化 -->
+        <format.action>format</format.action>
+        <!-- 开源许可 -->
+        <license.maven.plugin>3.0</license.maven.plugin>
+        <!-- 项目编码 -->
+        <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+        <!-- 原始源码目录 -->
+        <origin.source.dir>src/main/java</origin.source.dir>
+        <!-- 打包生成source时使用的目录 -->
+        <source.generate.dir>src/main/java</source.generate.dir>
         <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
         <functional.version>5.0</functional.version>
+        <checkstyle.version>3.1.1</checkstyle.version>
+        <!-- jacoco的行覆盖率最小值 -->
+        <jacoco.coveredratio.line>0.50</jacoco.coveredratio.line>
+        <lombok.version>1.18.26</lombok.version>
+        <byte-buddy.version>1.9.3</byte-buddy.version>
+        <cglib.version>3.2.5</cglib.version>
+        <commons-pool2.version>2.8.1</commons-pool2.version>
+        <slf4j.version>1.7.5</slf4j.version>
     </properties>
     
     <developers>
@@ -23,6 +41,43 @@
             <organizationUrl>https://www.hehouhui.cn</organizationUrl>
         </developer>
     </developers>
+    
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- 对象池 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>${commons-pool2.version}</version>
+            <optional>true</optional>
+        </dependency>
+        
+        <!-- 动态代理使用 -->
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>${byte-buddy.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <!--CGLIB依赖包-->
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>${cglib.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
     
     <build>
         <plugins>
@@ -36,6 +91,39 @@
                     <testSource>${java.version}</testSource>
                     <testTarget>${java.version}</testTarget>
                 </configuration>
+            </plugin>
+            <!-- site插件显式声明，做一些个性化配置 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.9.0</version>
+                <configuration>
+                    <!-- 指定环境为中文环境 -->
+                    <locales>zh</locales>
+                    <!-- 指定输出目录 -->
+                    <outputDirectory>${project.build.directory}/site</outputDirectory>
+                    <relativizeDecorationLinks>false</relativizeDecorationLinks>
+                </configuration>
+            </plugin>
+            
+            <!-- 代码格式化插件，自动格式化代码使之格式统一 -->
+            <plugin>
+                <groupId>net.revelc.code.formatter</groupId>
+                <artifactId>formatter-maven-plugin</artifactId>
+                <version>2.13.0</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <configFile>${project.basedir}/Formatter.xml</configFile>
+                    <sourceDirectory>${origin.source.dir}</sourceDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>${format.action}</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -51,6 +139,33 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- 添加license头 -->
+<!--            <plugin>-->
+<!--                <groupId>com.mycila</groupId>-->
+<!--                <artifactId>license-maven-plugin</artifactId>-->
+<!--                <version>${license.maven.plugin}</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>generate-sources</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>remove</goal>-->
+<!--                            <goal>format</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    <quiet>true</quiet>-->
+<!--                    <header>HEADER</header>-->
+<!--                    <includes>-->
+<!--                        <include>**/src/main/java/**</include>-->
+<!--                        <include>**/src/test/java/**</include>-->
+<!--                    </includes>-->
+<!--                    <strictCheck>true</strictCheck>-->
+<!--                    <mapping>-->
+<!--                        <java>SLASHER_STYLE</java>-->
+<!--                    </mapping>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
     

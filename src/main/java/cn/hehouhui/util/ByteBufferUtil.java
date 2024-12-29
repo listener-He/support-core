@@ -10,7 +10,9 @@ import java.nio.ByteBuffer;
  */
 public class ByteBufferUtil {
 
-    private ByteBufferUtil() {throw new AssertionError();}
+    private ByteBufferUtil() {
+        throw new AssertionError();
+    }
 
     /**
      * 位移使用，位移8bit
@@ -26,8 +28,6 @@ public class ByteBufferUtil {
      * 定义3byte的长度：3
      */
     private static final int BYTES24 = 3;
-
-
 
     /**
      * 将指定数据写入byteBuffer中，并且在写入数据前先写入1byte的数据长度信息（数据长度不能超过1byte的最大值）

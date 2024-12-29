@@ -12,7 +12,6 @@
  */
 package cn.hehouhui.util;
 
-
 import cn.hehouhui.constant.ExceptionProviderConst;
 
 import java.io.File;
@@ -38,7 +37,8 @@ public class FileUtil {
     /**
      * 创建指定目录
      *
-     * @param path 目录名
+     * @param path
+     *            目录名
      *
      * @return 目录
      */
@@ -54,32 +54,32 @@ public class FileUtil {
     /**
      * 校验文件的访问权限，如果没有权限访问则会抛出异常
      *
-     * @param file          文件
-     * @param mustDirectory 该文件是否必须是目录，true表示是
+     * @param file
+     *            文件
+     * @param mustDirectory
+     *            该文件是否必须是目录，true表示是
      */
     public static void checkFileAccess(File file, boolean mustDirectory) {
         if (file.exists()) {
             if (mustDirectory && !file.isDirectory()) {
-                throw new RuntimeException(
-                    String.format("路径[%s]不是一个目录而是一个文件", file.getAbsolutePath()));
+                throw new RuntimeException(String.format("路径[%s]不是一个目录而是一个文件", file.getAbsolutePath()));
             }
 
             if (!file.canRead() || !file.canWrite()) {
-                throw new RuntimeException(
-                    String.format("对路径[%s]没有读写权限", file.getAbsolutePath()));
+                throw new RuntimeException(String.format("对路径[%s]没有读写权限", file.getAbsolutePath()));
             }
         } else if (file.getParentFile() != null) {
             checkFileAccess(file.getParentFile(), mustDirectory);
         } else {
-            throw new RuntimeException(
-                String.format("对路径[%s]没有读写权限，同时该文件也没有父文件了", file.getAbsolutePath()));
+            throw new RuntimeException(String.format("对路径[%s]没有读写权限，同时该文件也没有父文件了", file.getAbsolutePath()));
         }
     }
 
     /**
      * 删除指定文件/目录
      *
-     * @param file 要删除的文件/目录，如果是目录，会递归删除里边的所有文件
+     * @param file
+     *            要删除的文件/目录，如果是目录，会递归删除里边的所有文件
      *
      * @return 删除失败的文件
      */
@@ -112,7 +112,8 @@ public class FileUtil {
     /**
      * 清空目录
      *
-     * @param file 目录
+     * @param file
+     *            目录
      *
      * @return 删除失败的文件
      */
@@ -139,7 +140,8 @@ public class FileUtil {
     /**
      * 遍历文件夹
      *
-     * @param file 文件夹
+     * @param file
+     *            文件夹
      *
      * @return 文件夹中所有文件（不包含本文件夹）
      */
@@ -150,8 +152,10 @@ public class FileUtil {
     /**
      * 遍历文件夹
      *
-     * @param file   文件夹
-     * @param filter 过滤函数，返回false时跳过该文件，PS：可能是文件，也可能是目录
+     * @param file
+     *            文件夹
+     * @param filter
+     *            过滤函数，返回false时跳过该文件，PS：可能是文件，也可能是目录
      *
      * @return 文件夹中所有文件（不包含本文件夹）
      */
@@ -187,10 +191,14 @@ public class FileUtil {
     /**
      * 将源文件/源文件夹中所有内容（不包含源文件夹）移动到目标文件夹中
      *
-     * @param src     源文件/文件夹
-     * @param dstPath 目标路径
-     * @param dstName 目标文件名（允许为空），移动文件夹时不使用该参数，移动文件时使用该参数作为目标文件名，如果为空则使用源文件名
-     * @param msg     错误消息
+     * @param src
+     *            源文件/文件夹
+     * @param dstPath
+     *            目标路径
+     * @param dstName
+     *            目标文件名（允许为空），移动文件夹时不使用该参数，移动文件时使用该参数作为目标文件名，如果为空则使用源文件名
+     * @param msg
+     *            错误消息
      */
     public static void move(String src, String dstPath, String dstName, String msg) {
         moveOrCopy(src, dstPath, dstName, msg, false);
@@ -199,9 +207,12 @@ public class FileUtil {
     /**
      * 将源文件/源文件夹中所有内容移动到目标文件夹中
      *
-     * @param src     如果src指向的是文件，会将文件移动到指定目录，如果src指向的是目录，会递归将该目录中的所有文件移动到指定目录中
-     * @param dstPath 目标文件夹（必须是文件夹）
-     * @param msg     失败时抛出异常的msg
+     * @param src
+     *            如果src指向的是文件，会将文件移动到指定目录，如果src指向的是目录，会递归将该目录中的所有文件移动到指定目录中
+     * @param dstPath
+     *            目标文件夹（必须是文件夹）
+     * @param msg
+     *            失败时抛出异常的msg
      */
     public static void copy(String src, String dstPath, String msg) {
         copy(src, dstPath, null, msg);
@@ -210,10 +221,14 @@ public class FileUtil {
     /**
      * 将源文件/源文件夹中所有内容移动到目标文件夹中
      *
-     * @param src     如果src指向的是文件，会将文件移动到指定目录，如果src指向的是目录，会递归将该目录中的所有文件移动到指定目录中
-     * @param dstPath 目标文件夹（必须是文件夹）
-     * @param dstName 目标文件名，允许为空
-     * @param msg     失败时抛出异常的msg
+     * @param src
+     *            如果src指向的是文件，会将文件移动到指定目录，如果src指向的是目录，会递归将该目录中的所有文件移动到指定目录中
+     * @param dstPath
+     *            目标文件夹（必须是文件夹）
+     * @param dstName
+     *            目标文件名，允许为空
+     * @param msg
+     *            失败时抛出异常的msg
      */
     public static void copy(String src, String dstPath, String dstName, String msg) {
         moveOrCopy(src, dstPath, dstName, msg, true);
@@ -222,11 +237,16 @@ public class FileUtil {
     /**
      * 将源文件/源文件夹中所有内容（不包含源文件夹）移动到目标文件夹中
      *
-     * @param src     如果src指向的是文件，会将文件移动到指定目录，如果src指向的是目录，会递归将该目录中的所有文件移动到指定目录中
-     * @param dstPath 目标文件夹（必须是文件夹）
-     * @param dstName 目标文件名，允许为空，为空时使用源文件名
-     * @param msg     失败时抛出异常的msg
-     * @param copy    是否是copy，true表示copy，false表示move
+     * @param src
+     *            如果src指向的是文件，会将文件移动到指定目录，如果src指向的是目录，会递归将该目录中的所有文件移动到指定目录中
+     * @param dstPath
+     *            目标文件夹（必须是文件夹）
+     * @param dstName
+     *            目标文件名，允许为空，为空时使用源文件名
+     * @param msg
+     *            失败时抛出异常的msg
+     * @param copy
+     *            是否是copy，true表示copy，false表示move
      */
     private static void moveOrCopy(String src, String dstPath, String dstName, String msg, boolean copy) {
         File srcDir = new File(src);
@@ -239,8 +259,7 @@ public class FileUtil {
         if (!dstDir.exists()) {
             Assert.assertTrue(dstDir.mkdirs(), msg, ExceptionProviderConst.IllegalStateExceptionProvider);
         } else if (dstDir.isFile()) {
-            throw new RuntimeException(
-                StrUtil.format("要将[{}]移动到[{}]，但是目标[{}]是一个文件而不是目录", src, dstPath, dstPath));
+            throw new RuntimeException(StrUtil.format("要将[{}]移动到[{}]，但是目标[{}]是一个文件而不是目录", src, dstPath, dstPath));
         }
 
         if (srcDir.isFile()) {
@@ -268,11 +287,16 @@ public class FileUtil {
     /**
      * 将源文件移动或复制到目标文件夹中
      *
-     * @param src     源文件，必须是单个文件
-     * @param dstPath 目标文件夹（外部必须保证是文件夹，该方法会无脑将该路径作为文件夹使用）
-     * @param dstName 目标文件名，允许为空，为空时使用源文件名
-     * @param msg     失败时抛出异常的msg
-     * @param copy    是否是copy，true表示copy，false表示move
+     * @param src
+     *            源文件，必须是单个文件
+     * @param dstPath
+     *            目标文件夹（外部必须保证是文件夹，该方法会无脑将该路径作为文件夹使用）
+     * @param dstName
+     *            目标文件名，允许为空，为空时使用源文件名
+     * @param msg
+     *            失败时抛出异常的msg
+     * @param copy
+     *            是否是copy，true表示copy，false表示move
      */
     private static void moveOrCopyFile(String src, String dstPath, String dstName, String msg, boolean copy) {
         File dstDir = new File(dstPath);
@@ -286,11 +310,10 @@ public class FileUtil {
             ExceptionProviderConst.IllegalStateExceptionProvider);
 
         try (FileOutputStream out =
-                 new FileOutputStream(new File(dstDir, StrUtil.getOrDefault(dstName, srcFile.getName())))) {
+            new FileOutputStream(new File(dstDir, StrUtil.getOrDefault(dstName, srcFile.getName())))) {
             IOUtil.write(out, new FileInputStream(src), true);
         } catch (IOException e) {
-            throw new RuntimeException(
-                StrUtil.format("文件[{}]复制到目录[{}]的过程中发生异常", src, dstPath), e);
+            throw new RuntimeException(StrUtil.format("文件[{}]复制到目录[{}]的过程中发生异常", src, dstPath), e);
         }
 
         if (!copy) {

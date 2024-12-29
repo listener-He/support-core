@@ -15,7 +15,9 @@ import java.util.Arrays;
  */
 public class StreamBase64 {
 
-    private StreamBase64(){throw new AssertionError();}
+    private StreamBase64() {
+        throw new AssertionError();
+    }
 
     /**
      * This array is a lookup table that translates 6-bit positive integer index values into their "Base64 Alphabet"

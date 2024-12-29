@@ -14,19 +14,16 @@ import java.lang.annotation.*;
 public @interface Signature {
 
     /**
-     * 需要忽略的表单参数名数组。
-     * 这些表单参数不会被用于签名计算。
+     * 需要忽略的表单参数名数组。 这些表单参数不会被用于签名计算。
      *
      * @return 忽略的表单参数名数组，默认为空数组。
      */
     String[] ignore() default {};
 
     /**
-     * 请求的过期时间，单位为毫秒。
-     * 如果请求超过此时间，则认为请求过期。
+     * 请求的过期时间，单位为毫秒。 如果请求超过此时间，则认为请求过期。
      *
      * @return 过期时间，0表示使用默认过期时间。
      */
     long overdue() default 0;
 }
-

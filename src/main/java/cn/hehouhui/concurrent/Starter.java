@@ -19,7 +19,6 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Supplier;
 
-
 /**
  * 启动器
  *
@@ -35,7 +34,8 @@ public class Starter {
     /**
      * 启动服务，如果当前服务未启动，则执行用户启动任务，如果已经启动，则不执行
      *
-     * @param startTask 用户启动任务，执行异常时启动失败
+     * @param startTask
+     *            用户启动任务，执行异常时启动失败
      */
     public void start(Runnable startTask) {
         LockTask.runWithLock(lock.writeLock(), () -> {
@@ -49,7 +49,8 @@ public class Starter {
     /**
      * 关闭服务，如果当前服务未关闭，则执行用户关闭任务，如果已经关闭，则不执行
      *
-     * @param stopTask 用户关闭任务，执行异常时关闭失败
+     * @param stopTask
+     *            用户关闭任务，执行异常时关闭失败
      */
     public void stop(Runnable stopTask) {
         LockTask.runWithLock(lock.writeLock(), () -> {
@@ -63,9 +64,11 @@ public class Starter {
     /**
      * 在开启状态下执行任务，保证任务执行完成前服务不会关闭
      *
-     * @param task 要执行的任务
+     * @param task
+     *            要执行的任务
      *
-     * @throws IllegalStateException 如果当前服务尚未开启，则抛出该异常
+     * @throws IllegalStateException
+     *             如果当前服务尚未开启，则抛出该异常
      */
     public void runWithStarted(Runnable task) throws IllegalStateException {
         LockTask.runWithLock(lock.readLock(), () -> {
@@ -77,11 +80,13 @@ public class Starter {
     /**
      * 在开启状态下执行任务并返回结果，保证任务执行完成前服务不会关闭
      *
-     * @param task 要执行的任务
+     * @param task
+     *            要执行的任务
      *
      * @return 任务结果
      *
-     * @throws IllegalStateException 如果当前服务尚未开启，则抛出该异常
+     * @throws IllegalStateException
+     *             如果当前服务尚未开启，则抛出该异常
      */
     public <T> T runWithStarted(Supplier<T> task) throws IllegalStateException {
         return LockTask.runWithLock(lock.readLock(), () -> {

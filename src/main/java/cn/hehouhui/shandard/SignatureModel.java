@@ -1,6 +1,5 @@
 package cn.hehouhui.shandard;
 
-
 import java.util.Optional;
 
 /**
@@ -11,8 +10,10 @@ import java.util.Optional;
  */
 public enum SignatureModel {
 
-    /** MD5加密 */ MD5("MD5"),
-    /** SHA-256 */ SHA256("SHA-256");
+    /** MD5加密 */
+    MD5("MD5"),
+    /** SHA-256 */
+    SHA256("SHA-256");
 
     public final String algorithm;
 
@@ -20,11 +21,11 @@ public enum SignatureModel {
         this.algorithm = algorithm;
     }
 
-
     /**
      * 算法
      *
-     * @param algorithm 算法
+     * @param algorithm
+     *            算法
      *
      * @return {@link Optional}<{@link SignatureModel}>
      */

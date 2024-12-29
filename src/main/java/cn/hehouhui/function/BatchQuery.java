@@ -1,6 +1,5 @@
 package cn.hehouhui.function;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +39,6 @@ public class BatchQuery<ID, T> {
         this(1000, queryFunc, mapper);
     }
 
-
     public BatchQuery(int batch, BiFunction<Integer, ID, List<T>> queryFunc, Function<T, ID> mapper) {
         this.batch = batch;
         this.queryFunc = queryFunc;
@@ -49,11 +47,11 @@ public class BatchQuery<ID, T> {
         this.lock = new ReentrantLock();
     }
 
-
     /**
      * 获取最后一个id
      *
-     * @param rows 排
+     * @param rows
+     *            排
      *
      * @return {@link ID }
      */
@@ -61,11 +59,11 @@ public class BatchQuery<ID, T> {
         return mapper.apply(rows.get(rows.size() - 1));
     }
 
-
     /**
      * 结果消费者
      *
-     * @param consumer 消费者
+     * @param consumer
+     *            消费者
      *
      * @return {@link BatchQuery}<{@link T}>
      */
@@ -76,11 +74,11 @@ public class BatchQuery<ID, T> {
         });
     }
 
-
     /**
      * 异常消费者
      *
-     * @param consumer 消费者
+     * @param consumer
+     *            消费者
      *
      * @return {@link BatchQuery }<{@link ID },{@link T }>
      */
@@ -91,11 +89,11 @@ public class BatchQuery<ID, T> {
         });
     }
 
-
     /**
      * 获取查询结果 （无限查询直到查不到为止）
      *
-     * @param first 起始ID
+     * @param first
+     *            起始ID
      *
      * @return {@link List }<{@link T }>
      */
@@ -103,12 +101,13 @@ public class BatchQuery<ID, T> {
         return get(first, c -> true);
     }
 
-
     /**
      * 获取查询结果
      *
-     * @param first    起始ID
-     * @param maxCount 最大查询条数
+     * @param first
+     *            起始ID
+     * @param maxCount
+     *            最大查询条数
      *
      * @return {@link List }<{@link T }>
      */
@@ -128,12 +127,13 @@ public class BatchQuery<ID, T> {
         });
     }
 
-
     /**
      * 获取
      *
-     * @param first          起始ID
-     * @param countPredicate 最大总数的判断
+     * @param first
+     *            起始ID
+     * @param countPredicate
+     *            最大总数的判断
      *
      * @return {@link List}<{@link T}>
      */
@@ -155,11 +155,11 @@ public class BatchQuery<ID, T> {
 
     }
 
-
     /**
      * 无限制的查询
      *
-     * @param first 第一个元素
+     * @param first
+     *            第一个元素
      *
      * @return long
      */
@@ -170,8 +170,10 @@ public class BatchQuery<ID, T> {
     /**
      * 无限制的查询
      *
-     * @param first 第一个元素
-     * @param max   最大限制数
+     * @param first
+     *            第一个元素
+     * @param max
+     *            最大限制数
      *
      * @return long
      */
@@ -191,12 +193,13 @@ public class BatchQuery<ID, T> {
         });
     }
 
-
     /**
      * 运行
      *
-     * @param first     起始ID，用于开始查询
-     * @param predicate 用于决定何时停止查询的条件
+     * @param first
+     *            起始ID，用于开始查询
+     * @param predicate
+     *            用于决定何时停止查询的条件
      */
     public long run(ID first, Predicate<Integer> predicate) {
         return concurrent(() -> {
@@ -243,11 +246,11 @@ public class BatchQuery<ID, T> {
 
     }
 
-
     /**
      * 同时发生
      *
-     * @param supplier 执行函数
+     * @param supplier
+     *            执行函数
      *
      * @return {@link R }
      */
@@ -262,6 +265,5 @@ public class BatchQuery<ID, T> {
         throw new RuntimeException("查询冲突");
 
     }
-
 
 }

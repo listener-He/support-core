@@ -189,9 +189,11 @@ public class IOUtil {
     /**
      * 关闭一个或多个流对象
      *
-     * @param closeable 可关闭的流对象列表
+     * @param closeable
+     *            可关闭的流对象列表
      *
-     * @throws IOException IOException
+     * @throws IOException
+     *             IOException
      */
     public static void close(Closeable... closeable) throws IOException {
         if (closeable != null) {

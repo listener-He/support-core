@@ -17,8 +17,7 @@ public class Entry<K, V> {
 
     private V value;
 
-    public Entry() {
-    }
+    public Entry() {}
 
     public Entry(K key, V value) {
         this.key = key;
@@ -46,11 +45,11 @@ public class Entry<K, V> {
         this.value = value;
     }
 
-
     /**
-     *  根据map转集合
+     * 根据map转集合
      *
-     * @param map map
+     * @param map
+     *            map
      *
      * @return {@link List }<{@link Entry }<{@link K }, {@link V }>>
      */

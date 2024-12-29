@@ -17,7 +17,8 @@ public class EmptyUtil {
     /**
      * 集合是否为空
      *
-     * @param collection 集合
+     * @param collection
+     *            集合
      *
      * @return boolean
      */
@@ -28,7 +29,8 @@ public class EmptyUtil {
     /**
      * 集合不为空
      *
-     * @param collection 集合
+     * @param collection
+     *            集合
      *
      * @return boolean
      */
@@ -39,7 +41,8 @@ public class EmptyUtil {
     /**
      * 为空
      *
-     * @param arrays 集合
+     * @param arrays
+     *            集合
      *
      * @return boolean
      */
@@ -50,7 +53,8 @@ public class EmptyUtil {
     /**
      * 对象不为空
      *
-     * @param arrays 集合
+     * @param arrays
+     *            集合
      *
      * @return boolean
      */
@@ -58,11 +62,11 @@ public class EmptyUtil {
         return !isEmpty(arrays);
     }
 
-
     /**
      * 集合是否为空
      *
-     * @param map map集合
+     * @param map
+     *            map集合
      *
      * @return boolean
      */
@@ -73,7 +77,8 @@ public class EmptyUtil {
     /**
      * 集合不为空
      *
-     * @param map map集合
+     * @param map
+     *            map集合
      *
      * @return boolean
      */
@@ -84,7 +89,8 @@ public class EmptyUtil {
     /**
      * 字符串是否为空
      *
-     * @param str 字符串
+     * @param str
+     *            字符串
      *
      * @return boolean
      */
@@ -95,7 +101,8 @@ public class EmptyUtil {
     /**
      * 集合不为空
      *
-     * @param str 字符串
+     * @param str
+     *            字符串
      *
      * @return boolean
      */
@@ -106,7 +113,8 @@ public class EmptyUtil {
     /**
      * 为空
      *
-     * @param bean 对象
+     * @param bean
+     *            对象
      *
      * @return boolean
      */
@@ -117,14 +125,14 @@ public class EmptyUtil {
     /**
      * 对象不为空
      *
-     * @param bean 豆
+     * @param bean
+     *            豆
      *
      * @return boolean
      */
     public static boolean isNotEmpty(Object bean) {
         return !isEmpty(bean);
     }
-
 
     /**
      * 空集合
@@ -149,7 +157,7 @@ public class EmptyUtil {
      *
      * @return {@link Map }<{@link K },{@link V }>
      */
-    public static <K,V> Map<K,V> emptyMap() {
-      return Collections.emptyMap();
+    public static <K, V> Map<K, V> emptyMap() {
+        return Collections.emptyMap();
     };
 }

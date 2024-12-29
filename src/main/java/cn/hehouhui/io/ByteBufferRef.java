@@ -23,8 +23,7 @@ public class ByteBufferRef {
      */
     private int len;
 
-    public ByteBufferRef() {
-    }
+    public ByteBufferRef() {}
 
     public ByteBufferRef(final byte[] data, final int offset, final int len) {
         this.data = data;

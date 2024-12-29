@@ -36,7 +36,6 @@ public class Area {
      */
     private List<Area> childList = Collections.emptyList();
 
-
     /**
      * 自己复制自己，deep copy
      *
@@ -50,7 +49,6 @@ public class Area {
         area.childList = childList.stream().map(Area::copy).toList();
         return area;
     }
-
 
     public String getCode() {
         return code;

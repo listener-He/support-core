@@ -26,4 +26,5 @@ public class CodeErrorException extends RuntimeException {
     public CodeErrorException(final Throwable cause) {
         super(cause);
     }
+
 }

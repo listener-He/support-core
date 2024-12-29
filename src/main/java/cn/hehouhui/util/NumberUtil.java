@@ -12,7 +12,6 @@
  */
 package cn.hehouhui.util;
 
-
 /**
  * 数字工具
  *

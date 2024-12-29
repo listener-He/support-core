@@ -41,7 +41,8 @@ public interface TreeNode<ID, S extends Comparable<S>, E> {
     /**
      * 设置子节点
      *
-     * @param children 子节点
+     * @param children
+     *            子节点
      */
     void setChildren(List<E> children);
 }
