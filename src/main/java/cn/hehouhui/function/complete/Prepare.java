@@ -2,6 +2,7 @@ package cn.hehouhui.function.complete;
 
 
 import cn.hehouhui.util.Assert;
+import cn.hehouhui.util.EmptyUtil;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -137,7 +138,7 @@ public class Prepare<I, N, E> {
         Map<? super I, ? extends N> map = write.get();
         // 返回一个Consumer对象，该对象将在每个元素上执行设置操作
         return target -> {
-            if (!filter.test(target)) {
+            if (!filter.test(target) || EmptyUtil.isEmpty(map)) {
                 return;
             }
             // 遍历所有设置操作，并在目标元素上执行
