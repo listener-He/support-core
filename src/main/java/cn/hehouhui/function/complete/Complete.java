@@ -17,7 +17,7 @@ import java.util.function.Function;
  * <p>
  * 这应该是 complete函数 一年多来的究极演化体了。可同时支持多组补充函数
  * <p> v1.0：{@link cn.hehouhui.util.FunctionUtil#complete(Collection, Function, BiConsumer, Function)}
- * <p> v1.1: {@link FunctionUtil#complete(Collection, Function, FunctionUtil.SetGet[])}
+ * <p> v1.1: @link FunctionUtil#complete(Collection, Function, FunctionUtil.SetGet[])
  * <p> 例子：
  * <blockquote><pre>
  *   Complete.start(userList)
@@ -75,8 +75,6 @@ public class Complete<E> {
 
     /**
      * 构建一个Prepare对象，用于处理元素的ID和名称映射
-     * 此方法本无存在的必要，为了快速升级现有的{@link online.haien.benefits.util.BeanUtil#complete(Collection, Function, BiConsumer, Function)}
-     * 而存在
      *
      * @param <I>            元素ID的类型
      * @param <N>            元素名称的类型

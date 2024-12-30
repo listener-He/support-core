@@ -1,6 +1,7 @@
 package cn.hehouhui.function.complete;
 
-import org.springframework.util.Assert;
+
+import cn.hehouhui.util.Assert;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -130,14 +131,22 @@ public class Prepare<I, N, E> {
     protected Consumer<E> finish() {
         // 检查是否已进行准备操作，如果没有，则抛出异常
         if (!isPrepare.get()) {
-            throw new RuntimeException("Complete must be prepared before finish!");
+            return target -> {};
         }
         // 获取当前的Map对象，用于读取操作
         Map<? super I, ? extends N> map = write.get();
         // 返回一个Consumer对象，该对象将在每个元素上执行设置操作
         return target -> {
+            if (!filter.test(target)) {
+                return;
+            }
             // 遍历所有设置操作，并在目标元素上执行
-            setGetList.forEach(s -> s.set(target, map.get(s.get(target))));
+            setGetList.forEach(s -> {
+                N n = map.get(s.get(target));
+                if (n != null) {
+                    s.set(target, n);
+                }
+            });
         };
     }
 

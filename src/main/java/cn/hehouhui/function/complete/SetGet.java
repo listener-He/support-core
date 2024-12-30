@@ -1,7 +1,7 @@
 package cn.hehouhui.function.complete;
 
+import cn.hehouhui.util.Assert;
 import lombok.Getter;
-import org.springframework.util.Assert;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
