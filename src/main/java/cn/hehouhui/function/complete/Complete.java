@@ -12,7 +12,6 @@ import java.util.concurrent.Executor;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * 补充函数
@@ -99,6 +98,33 @@ public class Complete<E> {
         return prepare;
     }
 
+
+    /**
+     * 执行当前存量任务
+     * <p>
+     * 此方法用于在当前流程或任务完成时，执行定义在{@link #over()}中的操作
+     * 它提供了一种机制，确保在流程的特定阶段执行某些操作，例如资源释放、通知或其他清理工作
+     * 然后返回当前对象，以支持链式调用和进一步操作
+     *
+     * @return 返回Complete对象，允许进行链式调用或进一步操作
+     */
+    public Complete<E> doThen() {
+        over();
+        return this;
+    }
+
+    /**
+     * 执行当前存量任务然后准备继续添加其他任务
+     *
+     * @param executor 调度器
+     *
+     * @return 返回Complete对象，使得可以链式调用其他方法
+     */
+    public Complete<E> doThen(Executor executor) {
+        over(executor);
+        return this;
+    }
+
     /**
      * 调用当前实例的over方法处理其内部的collection
      * 此方法的存在是为了提供一个便捷的方式，使得当前实例可以直接调用其内部的collection进行处理
@@ -135,7 +161,7 @@ public class Complete<E> {
             actuator.stream().map(Prepare::finish).reduce(Consumer::andThen).ifPresent(collection::forEach);
         } else {
             // 使用CompletableFuture来并行执行这些操作，以提高效率
-            List<CompletableFuture<Consumer<E>>> futures = actuator.stream().map(prepare -> CompletableFuture.supplyAsync(prepare::finish, executor)).collect(Collectors.toList());
+            List<CompletableFuture<Consumer<E>>> futures = actuator.stream().map(prepare -> CompletableFuture.supplyAsync(prepare::finish, executor)).toList();
             futures.stream().map(CompletableFuture::join).reduce(Consumer::andThen).ifPresent(collection::forEach);
         }
 

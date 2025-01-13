@@ -41,7 +41,7 @@ public class FunctionUtil {
                 return Collections.emptyMap();
             }
             // 过滤出未缓存的键
-            List<K> notCacheIds = ids.stream().filter(id -> !cacheMap.containsKey(id)).collect(Collectors.toList());
+            List<K> notCacheIds = ids.stream().filter(id -> !cacheMap.containsKey(id)).distinct().collect(Collectors.toList());
             // 如果有未缓存的键，则调用原始函数进行处理
             if (EmptyUtil.isNotEmpty(notCacheIds)) {
                 Map<K, V> map = function.apply(notCacheIds);
@@ -51,7 +51,7 @@ public class FunctionUtil {
                 }
             }
             // 返回缓存映射
-            return ids.stream().collect(Collectors.toMap(Function.identity(), cacheMap::get));
+            return ids.stream().distinct().filter(cacheMap::containsKey).collect(Collectors.toMap(Function.identity(), cacheMap::get));
         };
     }
 
