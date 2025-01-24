@@ -1,6 +1,5 @@
 package cn.hehouhui.function.complete;
 
-
 import cn.hehouhui.util.Assert;
 import cn.hehouhui.util.EmptyUtil;
 
@@ -30,12 +29,12 @@ public class Prepare<I, N, E> {
 
     private Predicate<E> filter = Objects::nonNull;
 
-    protected Prepare(final Function<? super List<I>, ? extends Map<? super I, ? extends N>> nameMapCreator, final Complete<E> father) {
+    protected Prepare(final Function<? super List<I>, ? extends Map<? super I, ? extends N>> nameMapCreator,
+        final Complete<E> father) {
         Assert.notNull(nameMapCreator, "nameMapCreator can not be null!");
         this.write = new Write<>(nameMapCreator);
         this.father = father;
     }
-
 
     /**
      * 还有高手？
@@ -49,8 +48,7 @@ public class Prepare<I, N, E> {
     /**
      * 执行当前存量任务
      * <p>
-     * 此方法用于在当前流程或任务完成时，执行定义在{@link Complete#over()}中的操作
-     * 它提供了一种机制，确保在流程的特定阶段执行某些操作，例如资源释放、通知或其他清理工作
+     * 此方法用于在当前流程或任务完成时，执行定义在{@link Complete#over()}中的操作 它提供了一种机制，确保在流程的特定阶段执行某些操作，例如资源释放、通知或其他清理工作
      * 然后返回当前对象，以支持链式调用和进一步操作
      *
      * @return 返回Complete对象，允许进行链式调用或进一步操作
@@ -62,7 +60,8 @@ public class Prepare<I, N, E> {
     /**
      * 执行当前存量任务然后准备继续添加其他任务
      *
-     * @param executor 调度器
+     * @param executor
+     *            调度器
      *
      * @return 返回Complete对象，使得可以链式调用其他方法
      */
@@ -73,7 +72,8 @@ public class Prepare<I, N, E> {
     /**
      * 设置过滤器
      *
-     * @param filter 过滤器
+     * @param filter
+     *            过滤器
      *
      * @return 返回当前对象，支持链式调用
      */
@@ -84,26 +84,26 @@ public class Prepare<I, N, E> {
         return this;
     }
 
-
     /**
-     * 向Prepare对象中添加一个用于设置和获取节点信息的SetGet对象
-     * 此方法允许通过提供一个函数和一个双消费者来定义如何从边对象中获取ID以及如何设置名称
+     * 向Prepare对象中添加一个用于设置和获取节点信息的SetGet对象 此方法允许通过提供一个函数和一个双消费者来定义如何从边对象中获取ID以及如何设置名称
      *
-     * @param idGetter   一个函数，用于从边对象中获取节点ID
-     * @param nameSetter 一个双消费者，用于将名称设置到边对象中
+     * @param idGetter
+     *            一个函数，用于从边对象中获取节点ID
+     * @param nameSetter
+     *            一个双消费者，用于将名称设置到边对象中
      *
      * @return 返回Prepare对象本身，允许链式调用
      */
     public Prepare<I, N, E> add(Function<? super E, ? extends I> idGetter,
-                                BiConsumer<? super E, ? super N> nameSetter) {
+        BiConsumer<? super E, ? super N> nameSetter) {
         return add(new SetGet<>(idGetter, nameSetter));
     }
 
     /**
-     * 向当前对象中添加一个新的SetGet实例
-     * 此方法用于在当前对象的setGetList中添加一个新的SetGet实例，以实现对边相关信息的管理
+     * 向当前对象中添加一个新的SetGet实例 此方法用于在当前对象的setGetList中添加一个新的SetGet实例，以实现对边相关信息的管理
      *
-     * @param setGet 要添加的SetGet实例，用于管理边相关信息
+     * @param setGet
+     *            要添加的SetGet实例，用于管理边相关信息
      *
      * @return 返回当前的Complete对象，支持链式调用
      */
@@ -126,11 +126,10 @@ public class Prepare<I, N, E> {
     }
 
     /**
-     * 准备操作
-     * 此方法用于在执行实际操作之前进行必要的准备和检查它通过调用关系图中的所有设置方法来收集数据，
-     * 并将它们添加到write集合中，以确保所有必要的数据都已准备好
+     * 准备操作 此方法用于在执行实际操作之前进行必要的准备和检查它通过调用关系图中的所有设置方法来收集数据， 并将它们添加到write集合中，以确保所有必要的数据都已准备好
      *
-     * @param target 指定的操作目标，用于从setGetList中获取数据
+     * @param target
+     *            指定的操作目标，用于从setGetList中获取数据
      *
      * @return 返回Complete对象，允许进行链式调用
      */
@@ -146,18 +145,19 @@ public class Prepare<I, N, E> {
     }
 
     /**
-     * 结束准备状态并返回一个Consumer对象，该对象将在调用时执行定义的操作
-     * 此方法确保在调用finish之前，准备阶段已经通过isPrepare标志完成如果未完成准备，则抛出异常
+     * 结束准备状态并返回一个Consumer对象，该对象将在调用时执行定义的操作 此方法确保在调用finish之前，准备阶段已经通过isPrepare标志完成如果未完成准备，则抛出异常
      * 它还从write中获取当前的Map，并返回一个Consumer，该Consumer将在被接受的每个元素上执行在prepare阶段定义的设置操作
      *
      * @return Consumer对象，用于在给定的元素上执行设置操作
      *
-     * @throws RuntimeException 如果在调用finish之前没有进行prepare，则抛出运行时异常
+     * @throws RuntimeException
+     *             如果在调用finish之前没有进行prepare，则抛出运行时异常
      */
     protected Consumer<E> finish() {
         // 检查是否已进行准备操作，如果没有，则抛出异常
         if (!isPrepare.get()) {
-            return target -> {};
+            return target -> {
+            };
         }
         // 获取当前的Map对象，用于读取操作
         Map<? super I, ? extends N> map = write.get();

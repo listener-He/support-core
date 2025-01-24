@@ -22,13 +22,14 @@ public class FunctionUtil {
     }
 
     /**
-     * 创建一个缓存函数
-     * 该函数接收一个功能函数作为参数，该功能函数应返回一个从键列表到值映射的函数
-     * 缓存函数的作用是将功能函数的结果缓存起来，以提高后续相同输入的处理效率
+     * 创建一个缓存函数 该函数接收一个功能函数作为参数，该功能函数应返回一个从键列表到值映射的函数 缓存函数的作用是将功能函数的结果缓存起来，以提高后续相同输入的处理效率
      *
-     * @param function 功能函数，接受一个键列表并返回一个键值映射
-     * @param <K>      键的类型
-     * @param <V>      值的类型
+     * @param function
+     *            功能函数，接受一个键列表并返回一个键值映射
+     * @param <K>
+     *            键的类型
+     * @param <V>
+     *            值的类型
      *
      * @return 一个经过缓存优化的函数，它会使用内部缓存来提高效率
      */
@@ -41,7 +42,8 @@ public class FunctionUtil {
                 return Collections.emptyMap();
             }
             // 过滤出未缓存的键
-            List<K> notCacheIds = ids.stream().filter(id -> !cacheMap.containsKey(id)).distinct().collect(Collectors.toList());
+            List<K> notCacheIds =
+                ids.stream().filter(id -> !cacheMap.containsKey(id)).distinct().collect(Collectors.toList());
             // 如果有未缓存的键，则调用原始函数进行处理
             if (EmptyUtil.isNotEmpty(notCacheIds)) {
                 Map<K, V> map = function.apply(notCacheIds);
@@ -51,7 +53,8 @@ public class FunctionUtil {
                 }
             }
             // 返回缓存映射
-            return ids.stream().distinct().filter(cacheMap::containsKey).collect(Collectors.toMap(Function.identity(), cacheMap::get));
+            return ids.stream().distinct().filter(cacheMap::containsKey)
+                .collect(Collectors.toMap(Function.identity(), cacheMap::get));
         };
     }
 
@@ -293,6 +296,5 @@ public class FunctionUtil {
         }
 
     }
-
 
 }

@@ -26,7 +26,6 @@ public class SetGet<E, I, N> {
         this.nameSetter = nameSetter;
     }
 
-
     public I get(E target) {
         return idGetter.apply(target);
     }

@@ -1,6 +1,5 @@
 package cn.hehouhui.function.complete;
 
-
 import cn.hehouhui.util.EmptyUtil;
 
 import java.util.*;
@@ -27,12 +26,11 @@ public class Write<I, N> {
         this.nameMapCreator = nameMapCreator;
     }
 
-
     /**
-     * 添加一个ID到集合中
-     * 此方法确保相同的ID只会被添加一次，并且在多线程环境下安全地延迟初始化ID集合
+     * 添加一个ID到集合中 此方法确保相同的ID只会被添加一次，并且在多线程环境下安全地延迟初始化ID集合
      *
-     * @param id 要添加的ID，必须是唯一的标识符
+     * @param id
+     *            要添加的ID，必须是唯一的标识符
      */
     protected void add(final I id) {
         if (id == null) {
@@ -53,11 +51,8 @@ public class Write<I, N> {
         isNew.set(true);
     }
 
-
     /**
-     * 获取一个映射，该映射以I的子类型为键，以N的实现类型为值
-     * 此方法用于根据当前设置的标识符列表生成一个相应的映射
-     * 如果标识符列表为空，则返回一个空映射
+     * 获取一个映射，该映射以I的子类型为键，以N的实现类型为值 此方法用于根据当前设置的标识符列表生成一个相应的映射 如果标识符列表为空，则返回一个空映射
      *
      * @return 返回一个映射，如果输入标识符列表为空，则返回空映射
      */

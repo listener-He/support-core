@@ -59,11 +59,11 @@ public class DateUtil {
      */
     public final static String TIME = "HH:mm:ss";
 
-
     /**
      * 获取季度
      *
-     * @param day 白天
+     * @param day
+     *            白天
      *
      * @return {@link Range }<{@link LocalDate }>
      */
@@ -73,25 +73,21 @@ public class DateUtil {
         // 根据季度计算出本季度的开始月份
         int startMonth = (quarter - 1) * 3 + 1;
 
-        return new Range<>(day.withMonth(startMonth).withDayOfMonth(1), day.withMonth(startMonth + 2).withDayOfMonth(1)
-            .minusDays(1));
+        return new Range<>(day.withMonth(startMonth).withDayOfMonth(1),
+            day.withMonth(startMonth + 2).withDayOfMonth(1).minusDays(1));
     }
-
 
     /**
      * 获取年范围
      *
-     * @param day 白天
+     * @param day
+     *            白天
      *
      * @return {@link Range }<{@link LocalDate }>
      */
     public static Range<LocalDate> getYear(LocalDate day) {
         return new Range<>(day.withDayOfYear(1), day.withDayOfYear(day.lengthOfYear()));
     }
-
-
-
-
 
     /**
      * 将时间戳转换为LocalDateTime（使用系统默认时区）

@@ -21,7 +21,6 @@ public class Range<T> {
         this.end = end;
     }
 
-
     public T getStart() {
         return start;
     }
